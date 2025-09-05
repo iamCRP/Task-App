@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39506632624",
+    "project_id": "task-app-ecdfb",
+    "storage_bucket": "task-app-ecdfb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39506632624:android:fcf9e1f61e802c2dd64075",
+        "android_client_info": {
+          "package_name": "com.example.task_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAelHmgoCNU_rFdkI7IwYmHL-_CaZmQm-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
