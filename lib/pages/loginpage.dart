@@ -18,6 +18,7 @@ class Loginpage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.blueAccent,
+        automaticallyImplyLeading: false,
         title: const Text(
           "Log-IN",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
