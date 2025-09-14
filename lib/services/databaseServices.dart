@@ -18,7 +18,7 @@ class Databaseservices {
       'title': title,
       'description': description,
       'completed': false,
-      'createedAt': FieldValue.serverTimestamp(),
+      'createdAt': FieldValue.serverTimestamp(),
     });
   }
 
@@ -42,7 +42,7 @@ class Databaseservices {
     return await todoCollection.doc(id).update({'completed': completed});
   }
 
-  //Update todo status
+  //delete todo status
   Future<void> deleteTodoTask(String id) async {
     return await todoCollection.doc(id).delete();
   }
@@ -52,6 +52,7 @@ class Databaseservices {
     return todoCollection
         .where('uid', isEqualTo: user!.uid)
         .where('completed', isEqualTo: false)
+        .orderBy('createdAt', descending: true)
         .snapshots()
         .map(_toListFromSnapshot);
   }
@@ -61,18 +62,34 @@ class Databaseservices {
     return todoCollection
         .where('uid', isEqualTo: user!.uid)
         .where('completed', isEqualTo: true)
+        .orderBy('createdAt', descending: true)
         .snapshots()
         .map(_toListFromSnapshot);
   }
 
+  //   List<Todomodel> _toListFromSnapshot(QuerySnapshot snapshot) {
+  //     return snapshot.docs.map((doc) {
+  //       return Todomodel(
+  //         id: doc.id,
+  //         title: doc['title'] ?? '',
+  //         description: doc['description'] ?? '',
+  //         completed: doc['completed'] ?? false,
+  //         timeStamp: doc['createdAt'] ?? Timestamp.now(),
+  //       );
+  //     }).toList();
+  //   }
+  // }
+
   List<Todomodel> _toListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+
       return Todomodel(
         id: doc.id,
-        title: doc['title'] ?? '',
-        description: doc['description'] ?? '',
-        completed: doc['completed'] ?? false,
-        timeStamp: doc['createdAt'] ?? '',
+        title: data['title'] ?? '',
+        description: data['description'] ?? '',
+        completed: data['completed'] ?? false,
+        timeStamp: (data['createdAt'] ?? Timestamp.now()),
       );
     }).toList();
   }

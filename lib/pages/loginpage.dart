@@ -20,7 +20,7 @@ class Loginpage extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
         automaticallyImplyLeading: false,
         title: const Text(
-          "Log-IN",
+          "Log-In",
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
         ),
         centerTitle: true,
@@ -135,7 +135,7 @@ class Loginpage extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         // TODO: Navigate to Login page
-                        Navigator.pop(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Signup()),
                         );

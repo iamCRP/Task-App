@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:task_app/firebase_options.dart';
 import 'package:task_app/pages/homepage.dart';
 import 'package:task_app/pages/loginpage.dart';
-import 'package:task_app/pages/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,3 +30,4 @@ class MyApp extends StatelessWidget {
 // Platform  Firebase App Id
 // android   1:39506632624:android:fcf9e1f61e802c2dd64075
 // ios       1:39506632624:ios:297bf2e826e2e416d64075
+//home: _auth.currentUser != null ? Homepage() : Loginpage(),
