@@ -44,6 +44,7 @@ class _NewtaskState extends State<Newtask> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Slidable(
+                  key: ValueKey(todomodel.id),
                   endActionPane: ActionPane(
                     motion: DrawerMotion(),
                     children: [
@@ -51,6 +52,7 @@ class _NewtaskState extends State<Newtask> {
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
                         icon: Icons.done,
+                        label: "Mark",
                         onPressed: (context) {
                           _databaseservices.updateTodoStatus(
                             todomodel.id,
@@ -60,7 +62,29 @@ class _NewtaskState extends State<Newtask> {
                       ),
                     ],
                   ),
-                  key: ValueKey(todomodel.id),
+                  startActionPane: ActionPane(
+                    motion: DrawerMotion(),
+                    children: [
+                      SlidableAction(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.white,
+                        icon: Icons.edit,
+                        label: "Edit",
+                        onPressed: (context) {
+                          _showTaskDialog(context, todo: todomodel);
+                        },
+                      ),
+                      SlidableAction(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: "delete",
+                        onPressed: (context) async {
+                          await _databaseservices.deleteTodoTask(todomodel.id);
+                        },
+                      ),
+                    ],
+                  ),
                   child: ListTile(
                     title: Text(
                       todomodel.title,
@@ -79,6 +103,79 @@ class _NewtaskState extends State<Newtask> {
         } else {
           return Center(child: CircularProgressIndicator(color: Colors.white));
         }
+      },
+    );
+  }
+
+  void _showTaskDialog(BuildContext context, {Todomodel? todo}) {
+    final TextEditingController _titlecontroller = TextEditingController(
+      text: todo?.title,
+    );
+    final TextEditingController _descriptioncontroller = TextEditingController(
+      text: todo?.description,
+    );
+    final Databaseservices _databaseService = Databaseservices();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            todo == null ? "Add task" : "Edit Task",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _titlecontroller,
+                    decoration: InputDecoration(
+                      labelText: "title",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: _descriptioncontroller,
+                    decoration: InputDecoration(
+                      labelText: "description",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (todo == null) {
+                  await _databaseService.addTodoTask(
+                    _titlecontroller.text,
+                    _descriptioncontroller.text,
+                  );
+                } else {
+                  await _databaseService.updateTodoTask(
+                    todo.id,
+                    _titlecontroller.text,
+                    _descriptioncontroller.text,
+                  );
+                }
+                Navigator.pop(context);
+              },
+              child: Text(todo == null ? "Add" : "Edit"),
+            ),
+          ],
+        );
       },
     );
   }
